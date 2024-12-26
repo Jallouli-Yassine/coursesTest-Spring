@@ -82,10 +82,20 @@ public class CourseRestController {
         return courseService.updateCourse(course);
     }
 
-    // Delete a course
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCourse(@PathVariable int id) {
+        Course course = courseService.getCourseById(id);
+
+        if (course != null && course.getImage() != null) {
+            Path imagePath = Paths.get("uploads/" + course.getImage());
+            try {
+                Files.deleteIfExists(imagePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         courseService.deleteCourse(id);
     }
 
