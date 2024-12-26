@@ -31,7 +31,7 @@ public class CourseRestController {
         }
         byte[] image = Files.readAllBytes(path);
         return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)  // or IMAGE_PNG depending on your file type
+                .contentType(MediaType.IMAGE_JPEG)
                 .body(image);
     }
 
@@ -52,13 +52,11 @@ public class CourseRestController {
         Files.createDirectories(path.getParent());
         Files.write(path, image.getBytes());
 
-        // Create the Course object and set its properties
         Course course = new Course();
         course.setTitle(title);
         course.setPrice(price);
         course.setImage(fileName);
 
-        // Save the course to the database
         return courseService.addCourse(course);
     }
 
@@ -70,13 +68,11 @@ public class CourseRestController {
         return courseService.getAllCourses();
     }
 
-    // Get course by ID
     @GetMapping("/{id}")
     public Course getCourseById(@PathVariable int id) {
         return courseService.getCourseById(id);
     }
 
-    // Update an existing course
     @PutMapping("update")
     public Course updateCourse(@RequestBody Course course) {
         return courseService.updateCourse(course);
